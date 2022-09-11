@@ -11,10 +11,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import com.example.services.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    val mTAG = MainActivity::class.java.simpleName
 
     /**
      * Переменная для хранения экземпляра нашего класса обслуживания
@@ -26,6 +25,8 @@ class MainActivity : AppCompatActivity() {
      */
     var mIsBound: Boolean? = null
 
+    private lateinit var binding: ActivityMainBinding
+
     private lateinit var start: AppCompatButton
     private lateinit var stop: AppCompatButton
     private lateinit var logs: AppCompatTextView
@@ -33,19 +34,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
-        start = findViewById(R.id.starts)
-        stop = findViewById(R.id.stops)
-        logs = findViewById(R.id.logs)
-        activityResult = findViewById(R.id.activityNext)
-
-        start.setOnClickListener {
+        binding.starts.setOnClickListener {
             startService(Intent(this, MyServices::class.java))
             bindService()
         }
 
-        stop.setOnClickListener {
+        binding.stops.setOnClickListener {
             stopService(Intent(this, MyServices::class.java))
             if (mIsBound == true) {
                 unbindService()
@@ -53,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        activityResult.setOnClickListener {
+        binding.activityNext.setOnClickListener {
             startActivity(Intent(this, ResultActivity::class.java))
         }
     }
@@ -64,7 +61,6 @@ class MainActivity : AppCompatActivity() {
      */
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, iBinder: IBinder) {
-            Log.d(mTAG, "ServiceConnection: connected to service.")
             /**
              * Мы привязались к MyService, привели IBinder и получили экземпляр MyBinder.
              */
@@ -78,7 +74,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            Log.d(mTAG, "ServiceConnection: disconnected from service.")
             mIsBound = false
         }
     }

@@ -11,19 +11,18 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
+import com.example.services.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
 
-    val mTAG = ResultActivity::class.java.simpleName
-    var mService: MyServices? = null
-    var mIsBound: Boolean? = null
-
-    private lateinit var logs: AppCompatTextView
+    private var mService: MyServices? = null
+    private var mIsBound: Boolean? = null
+    private lateinit var binding: ActivityResultBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_result)
-        logs = findViewById(R.id.logs)
+        binding = ActivityResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onStart() {
@@ -33,7 +32,6 @@ class ResultActivity : AppCompatActivity() {
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, iBinder: IBinder) {
-            Log.d(mTAG, "ServiceConnection: connected to service.")
             val binder = iBinder as MyServices.MyBinder
             mService = binder.service
             mIsBound = true
@@ -41,16 +39,15 @@ class ResultActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            Log.d(mTAG, "ServiceConnection: disconnected from service.")
             mIsBound = false
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun getRandomNumberFromService() {
-        mService?.randomNumberLiveData?.observe(this, Observer {
-            logs.text = "Random number from service: $it"
-        })
+        mService?.randomNumberLiveData?.observe(this) {
+            binding.logs.text = "Random number from service: $it"
+        }
     }
 
     override fun onDestroy() {

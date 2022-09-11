@@ -19,9 +19,9 @@ class MyServices : Service() {
 
     private val mBinder: IBinder = MyBinder()
     private val mGenerator: Random = Random()
-    val randomNumberLiveData: MutableLiveData<Int> = MutableLiveData()
-    val CHANNEL_ID = "Random number notification"
-    var ambientMediaPlayer: MediaPlayer? = null
+    private val randomNumberLiveData: MutableLiveData<Int> = MutableLiveData()
+    private val CHANNEL_ID = "Random number notification"
+    private var ambientMediaPlayer: MediaPlayer? = null
 
     inner class MyBinder : Binder() {
         val service: MyServices
@@ -29,7 +29,6 @@ class MyServices : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        Log.d("onBind", "SUCCESS")
         return mBinder
     }
 
@@ -41,7 +40,6 @@ class MyServices : Service() {
         ambientMediaPlayer = MediaPlayer.create(this, R.raw.music)
         ambientMediaPlayer!!.isLooping = true
 
-        Log.d("MyBoundService", "onCreate called")
         startNotification()
 
         Handler().postDelayed({
