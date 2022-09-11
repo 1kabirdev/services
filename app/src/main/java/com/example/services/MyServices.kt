@@ -10,7 +10,6 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import java.util.*
