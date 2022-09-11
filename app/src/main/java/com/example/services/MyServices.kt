@@ -19,7 +19,7 @@ class MyServices : Service() {
 
     private val mBinder: IBinder = MyBinder()
     private val mGenerator: Random = Random()
-    private val randomNumberLiveData: MutableLiveData<Int> = MutableLiveData()
+    val randomNumberLiveData: MutableLiveData<Int> = MutableLiveData()
     private val CHANNEL_ID = "Random number notification"
     private var ambientMediaPlayer: MediaPlayer? = null
 

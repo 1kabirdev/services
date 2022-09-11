@@ -27,11 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var start: AppCompatButton
-    private lateinit var stop: AppCompatButton
-    private lateinit var logs: AppCompatTextView
-    private lateinit var activityResult: AppCompatButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -84,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun getRandomNumberFromService() {
         mService?.randomNumberLiveData?.observe(this) {
-            logs.text = "Random number from service: $it"
+            binding.logs.text = "Random number from service: $it"
         }
     }
 
